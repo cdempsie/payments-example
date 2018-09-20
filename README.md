@@ -10,8 +10,14 @@ Have:
 - Something to send test requests. `curl` would do!
 
 ## Run
-- Clone the code.
+
+Steps are to clone the repo and then build the code.
+
 ```
+cd $GOPATH/src
+mkdir -p github.com/cdempsie
+cd github.com/cdempsie
+git clone https://github.com/cdempsie/payments-example
 go get -t ./...
 cd server
 go run server.go
