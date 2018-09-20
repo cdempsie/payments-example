@@ -18,6 +18,7 @@ cd $GOPATH/src
 mkdir -p github.com/cdempsie
 cd github.com/cdempsie
 git clone https://github.com/cdempsie/payments-example
+cd payments-example
 go get -t ./...
 cd server
 go run server.go
