@@ -30,6 +30,9 @@ The server will start on port 8000 by default, to change this do:
 go run server.go -port 8888
 ```
 
+## Supported Operations
+
+The API supports the basic CRUD operations plus List. Create will assign a new UUID to the payment.
 ## Run The Tests
 
 You can run the unit tests using (server does not need to be running):
