@@ -32,7 +32,7 @@ go run server.go -port 8888
 
 ## Supported Operations
 
-The API supports the basic CRUD operations plus List. Create will assign a new UUID to the payment.
+The API supports the basic CRUD operations plus List. Create will assign a new UUID to the payment if one is not supplied.
 ## Run The Tests
 
 You can run the unit tests using (server does not need to be running):

@@ -22,12 +22,13 @@ func NewInMemoryStore() *InMemoryStore {
 
 // Create creates a new payment in the store, assigning a UUID in the process.
 func (store *InMemoryStore) Create(payment *api.Payment) error {
-	id := uuid.New().String()
+	if payment.ID == "" {
+		payment.ID = uuid.New().String()
+	}
 	store.lock.Lock()
 	defer store.lock.Unlock()
 
-	payment.ID = id
-	store.data[id] = payment
+	store.data[payment.ID] = payment
 
 	return nil
 }
