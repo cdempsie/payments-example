@@ -12,7 +12,7 @@ import (
 // This is an example implementation of the PaymentStore interface and won't survive server restarts!
 type InMemoryStore struct {
 	data map[string]*api.Payment
-	lock sync.Mutex
+	lock sync.RWMutex
 }
 
 // NewInMemoryStore return a newly initialised memory store.
@@ -64,8 +64,8 @@ func (store *InMemoryStore) Delete(paymentUID string) error {
 // Load loads the payment with the given ID.
 // If the payment is not found an error is returned.
 func (store *InMemoryStore) Load(paymentUID string) (payment *api.Payment, err error) {
-	store.lock.Lock()
-	defer store.lock.Unlock()
+	store.lock.RLock()
+	defer store.lock.RUnlock()
 
 	if payment, ok := store.data[paymentUID]; ok {
 		return payment, nil
@@ -76,8 +76,8 @@ func (store *InMemoryStore) Load(paymentUID string) (payment *api.Payment, err e
 
 // List lists all the payments currently in the store.
 func (store *InMemoryStore) List() (results *api.ListHolder, err error) {
-	store.lock.Lock()
-	defer store.lock.Unlock()
+	store.lock.RLock()
+	defer store.lock.RUnlock()
 
 	result := &api.ListHolder{}
 
