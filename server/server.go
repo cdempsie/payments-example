@@ -90,6 +90,11 @@ func createPaymentHandler(responseWriter http.ResponseWriter, request *http.Requ
 		return
 	}
 
+	if ok, msg := payment.Valid(); !ok {
+		http.Error(responseWriter, msg, http.StatusBadRequest)
+		return
+	}
+
 	err = handler.Create(payment)
 	if err != nil {
 		responseWriter.WriteHeader(http.StatusInternalServerError)
@@ -115,6 +120,11 @@ func updatePaymentHandler(responseWriter http.ResponseWriter, request *http.Requ
 	if err != nil {
 		responseWriter.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(responseWriter, "Badly formed request: %v", err)
+		return
+	}
+
+	if ok, msg := payment.Valid(); !ok {
+		http.Error(responseWriter, msg, http.StatusBadRequest)
 		return
 	}
 

@@ -1,6 +1,8 @@
 // Package api holds the structs used by the api.
 package api
 
+import "strings"
+
 // ListHolder contains the struct used to respond to a list collection response.
 type ListHolder struct {
 	Data []Payment `json:"data"`
@@ -13,6 +15,33 @@ type Payment struct {
 	Version        int    `json:"version"`
 	OrganisationID string `json:"organisation_id"`
 	Attributes     `json:"attributes"`
+}
+
+// Valid returns true if the payment passes validation. Otherwise it returns false and a message containing the
+// detected errors.
+func (payment *Payment) Valid() (valid bool, messages string) {
+	valid = true
+	msgBuf := &strings.Builder{}
+
+	// example spot check validation only.
+	if payment.Type == "" {
+		valid = false
+		msgBuf.WriteString("payment type is missing")
+	}
+	if payment.OrganisationID == "" {
+		valid = false
+		if msgBuf.Len() >0 {
+			msgBuf.WriteString(", ")
+		}
+		msgBuf.WriteString( "payment organisation ID is missing")
+	}
+
+	if msgBuf.Len() > 0 {
+		messages = msgBuf.String()
+		strings.TrimSpace(messages)
+	}
+
+	return
 }
 
 // Attributes API type.

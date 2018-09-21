@@ -59,6 +59,26 @@ func TestCreateBadRequestNilBody(t *testing.T) {
 	}
 }
 
+func TestCreateBadRequestEmptyBody(t *testing.T) {
+	// Pass a mock store to the handler
+	mockStore := &mocks.PaymentStore{}
+	mockStore.On("Create", mock.Anything).Return(nil)
+	handler = payment_handler.NewPaymentHandler(mockStore)
+
+	req, err := http.NewRequest(http.MethodPost, APIBase, strings.NewReader("{}"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	recorder := httptest.NewRecorder()
+	createPaymentHandler(recorder, req)
+
+	// Check the status code is what we expect.
+	if status := recorder.Code; status != http.StatusBadRequest {
+		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusBadRequest)
+	}
+}
+
 func TestUpdateRequest(t *testing.T) {
 	// Pass a mock store to the handler
 	mockStore := &mocks.PaymentStore{}
